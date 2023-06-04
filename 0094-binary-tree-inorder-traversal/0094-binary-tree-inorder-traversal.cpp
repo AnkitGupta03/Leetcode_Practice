@@ -11,6 +11,7 @@
  */
 class Solution {
 public:
+    //Recursive approach
     void helper(TreeNode *root, vector<int> &ans){
         if(root == NULL)
             return;
