@@ -11,17 +11,21 @@
  */
 class Solution {
 public:
-    //iterative approach
-    vector<int> inorderTraversal(TreeNode* root) {
-        vector <int> ans;
-        if(root == NULL)
-            return ans;
-        vector <int> left = inorderTraversal(root -> left);
-        ans.insert(ans.end(), left.begin(), left.end());
-        ans.push_back(root -> val);
-        vector <int> right = inorderTraversal(root -> right);
-        ans.insert(ans.end(), right.begin(), right.end());
-        
-        return ans;
+    vector<int> inorderTraversal(TreeNode* root) { //iterative implementation using stack
+        vector <int> v;
+        stack <TreeNode* > s;
+        while(root != NULL || !s.empty()){
+            if(root != NULL){
+                s.push(root);
+                root = root -> left;
+            }
+            else{
+                root = s.top();
+                s.pop();
+                v.push_back(root -> val);
+                root = root -> right;
+            }
+        }
+        return v;
     }
 };
