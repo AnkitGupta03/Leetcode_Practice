@@ -11,19 +11,29 @@
  */
 class Solution {
 public:
-    vector<int> inorderTraversal(TreeNode* root) { //iterative implementation using stack
+    vector<int> inorderTraversal(TreeNode* root) {
+        // Morris inorder traversal.
         vector <int> v;
-        stack <TreeNode* > s;
-        while(root != NULL || !s.empty()){
-            if(root != NULL){
-                s.push(root);
-                root = root -> left;
+        TreeNode* curr = root;
+        while(curr!= NULL){
+            if(curr -> left == NULL){
+                v.push_back(curr -> val);
+                curr = curr -> right;
             }
             else{
-                root = s.top();
-                s.pop();
-                v.push_back(root -> val);
-                root = root -> right;
+                TreeNode *prev = curr -> left;
+                while(prev -> right != NULL && prev -> right != curr){
+                    prev = prev -> right;
+                }
+                if(prev -> right == NULL){
+                    prev -> right = curr;
+                    curr = curr -> left;
+                }
+                else{
+                    prev -> right = NULL;
+                    v.push_back(curr -> val);
+                    curr = curr -> right;
+                }
             }
         }
         return v;
