@@ -25,8 +25,8 @@ public:
                 predecessor = predecessor->left;
             }
             if (predecessor->left == NULL) {
-                res.push_back (current->val);
                 predecessor->left = current;
+                res.push_back (current->val);
                 current = current->right;
             } else {
                 predecessor->left = NULL;
