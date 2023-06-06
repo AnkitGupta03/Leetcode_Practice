@@ -12,6 +12,7 @@
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
+        //morris postorder traversal.
         vector<int> res;
     TreeNode* current = root;
     while (current != NULL) {
