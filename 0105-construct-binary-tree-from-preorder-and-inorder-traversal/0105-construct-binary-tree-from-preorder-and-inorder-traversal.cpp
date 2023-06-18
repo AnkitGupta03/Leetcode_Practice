@@ -22,7 +22,7 @@ public:
     }
     
     TreeNode* cTree(vector<int>& preorder,int preStart, int preEnd, vector<int>& inorder, int inStart, int inEnd, map<int, int>& inMap){
-        if(preStart > preEnd || inStart > inEnd) return NULL;
+        if(inStart > inEnd) return NULL;
         TreeNode *root = new TreeNode(preorder[preStart]);
         int inRoot = inMap[root -> val];
         int numsleft = inRoot - inStart;
