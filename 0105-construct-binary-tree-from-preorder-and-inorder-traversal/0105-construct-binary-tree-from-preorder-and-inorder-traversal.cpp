@@ -17,18 +17,18 @@ public:
         for(int i=0; i<inorder.size(); i++){
             inMap[inorder[i]] = i;
         }
-        TreeNode *root = buildTree(preorder, 0, preorder.size()-1, inorder, 0, inorder.size()-1, inMap);
+        TreeNode *root = cTree(preorder, 0, preorder.size()-1, inorder, 0, inorder.size()-1, inMap);
         return root;
     }
     
-    TreeNode* buildTree(vector<int>& preorder,int preStart, int preEnd, vector<int>& inorder, int inStart, int inEnd, map<int, int>& inMap){
+    TreeNode* cTree(vector<int>& preorder,int preStart, int preEnd, vector<int>& inorder, int inStart, int inEnd, map<int, int>& inMap){
         if(preStart > preEnd || inStart > inEnd) return NULL;
         TreeNode *root = new TreeNode(preorder[preStart]);
         int inRoot = inMap[root -> val];
         int numsleft = inRoot - inStart;
         
-        root -> left = buildTree(preorder, preStart+1, preStart+numsleft, inorder, inStart, inRoot -1, inMap);
-        root -> right = buildTree(preorder, preStart+numsleft+1, preEnd, inorder, inRoot +1, inEnd, inMap);
+        root -> left = cTree(preorder, preStart+1, preStart+numsleft, inorder, inStart, inRoot -1, inMap);
+        root -> right = cTree(preorder, preStart+numsleft+1, preEnd, inorder, inRoot +1, inEnd, inMap);
         return root;
     }
 };
