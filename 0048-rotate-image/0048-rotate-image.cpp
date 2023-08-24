@@ -1,19 +1,17 @@
 class Solution {
 public:
     void rotate(vector<vector<int>>& matrix) {
-        // brute force approach, not in place, as the question suggests.
+        // optimised approach, in place.
+        // first we will transpose the matrix.
         int n = matrix.size();
-        vector<vector<int>> a(n, vector<int>(n));
         for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                a[j][n-i-1] = matrix[i][j];
+            for(int j=i+1; j<n; j++){
+                swap(matrix[i][j], matrix[j][i]);
             }
         }
-        
+        //now we will reverse every row i.e. mat[i], which will give us the clockwise rotated matrix.
         for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                matrix[i][j] = a[i][j];
-            }
+            reverse(matrix[i].begin(), matrix[i].end());
         }
     }
 };
