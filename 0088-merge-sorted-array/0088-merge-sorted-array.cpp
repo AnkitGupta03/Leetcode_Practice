@@ -1,38 +1,21 @@
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-     vector<int> nums3;
-     int a = 0, b = 0;
-        while(a!=m && b!=n){
-            if(nums1[a] < nums2[b]){
-                nums3.push_back(nums1[a]);
-                a++;
-            }
-            else if(nums2[b] < nums1[a]){
-                nums3.push_back(nums2[b]);
-                b++;
+        // optimal solution, O(m+n) time complexity.
+        int i = m-1;
+        int j = n-1;
+        int k = m+n-1;
+        while(j >= 0){
+            if(i >= 0 && nums1[i] > nums2[j]){
+                nums1[k] = nums1[i];
+                k--;
+                i--;
             }
             else{
-                nums3.push_back(nums1[a]);
-                nums3.push_back(nums2[b]);
-                a++;
-                b++;
+                nums1[k] = nums2[j];
+                k--;
+                j--;
             }
-            
-        }
-        if(a==m){
-            for(int i=b; i<n; i++){
-                nums3.push_back(nums2[i]);
-            }
-        }
-        else if(b == n){
-            for(int i=a; i<m; i++){
-                nums3.push_back(nums1[i]);
-            }
-        }
-        
-        for(int i=0; i< m+n; i++){
-            nums1[i] = nums3[i];
         }
     }
 };
