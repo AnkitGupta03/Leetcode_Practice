@@ -8,8 +8,8 @@ public:
             for(int j=0; j<n; j++){
                 int avgsum = img[i][j];
                 int cnt = 1;
-                int dx[] = {-1, -1, -1,  0, 0,  1, 1, 1};
-                int dy[] = {-1,  0,  1, -1, 1, -1, 0, 1};
+                int dy[] = {-1, -1, -1,  0, 0,  1, 1, 1};
+                int dx[] = {-1,  0,  1, -1, 1, -1, 0, 1};
 
                 for(int k = 0; k < 8; k++) {
                     int ni = i + dx[k];
