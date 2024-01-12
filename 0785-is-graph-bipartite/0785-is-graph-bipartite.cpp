@@ -1,21 +1,14 @@
-class Solution {
+class Solution { // using dfs
 public:
-    bool bfscheck(int start, vector<int> &color, vector<vector<int>> &adj){
-        color[start] = 0;
-        queue<int> q;
-        q.push(start);
+    bool dfscheck(int start, int col, vector<int> &color, vector<vector<int>> &adj){
+        color[start] = col;
         
-        while(!q.empty()){
-            int node = q.front();
-            q.pop();
-            for(auto i: adj[node]){
-                if(color[i] == -1){
-                    color[i] = !color[node];
-                    q.push(i);
-                }
-                else if(color[i] == color[node]){
-                    return false;
-                }
+        for(auto it : adj[start]){
+            if(color[it] == -1){
+                if(!dfscheck(it, !col, color, adj)) return false;
+            }
+            else if(color[it] == col){
+                return false;
             }
         }
         return true;
@@ -25,9 +18,7 @@ public:
         vector<int> color(n, -1);
         for(int i=0; i<n; i++){
             if(color[i] == -1){
-                if(!bfscheck(i, color, graph)){
-                    return false;
-                }
+                if(!dfscheck(i, 0, color, graph)) return false;
             }
         }
         return true;
