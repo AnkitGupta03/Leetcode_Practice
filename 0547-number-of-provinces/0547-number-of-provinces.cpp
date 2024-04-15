@@ -1,38 +1,63 @@
+class DisjointSet {
+    vector<int> rank, parent;
+public:
+    DisjointSet(int n){
+        rank.resize(n+1, 0);
+        parent.resize(n+1);
+        for(int i=0; i<n; i++){
+            parent[i] = i;
+        }
+    }
+    
+    int findUPar(int node){
+        if(parent[node] == node) return node;
+        return parent[node] = findUPar(parent[node]);
+    }
+    
+    void unionByRank(int u, int v){
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        
+        if(ulp_u == ulp_v) return;
+        if(rank[ulp_u] < rank[ulp_v]){
+            parent[ulp_u] = ulp_v;
+        }
+        else if(rank[ulp_u] > rank[ulp_v]){
+            parent[ulp_v] = ulp_u;
+        }
+        else{
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+};
+
 class Solution {
 public:
     int findCircleNum(vector<vector<int>>& isConnected) {
         
         int n = isConnected.size(); // n = number of vertices
         
-        vector<vector<int>> adjlist(n);
+        vector<pair<int, int>> edges;
         for(int i=0; i<n; i++){
-            for(int j=0; j<n; j++){
-                if(isConnected[i][j] == 1){             // adjacency list of the graph.
-                    adjlist[i].push_back(j);
-                    adjlist[j].push_back(i);
+            for(int j=i+1; j<n; j++){
+                if(isConnected[i][j] == 1){             // list of edges in the graph.
+                    edges.push_back({i, j});
                 }
             }
         }
         
         int count = 0;
-        queue<int> q;
-        vector<bool> vis(n, 0);
-        for(int i=0; i<n; i++){
-            if(!vis[i]){
-                q.push(i);
-                count++;
-                vis[i] = 1;
-                while(!q.empty()){                  // running a bfs on the graph.
-                    int node = q.front();
-                    q.pop();
-                    for(auto i: adjlist[node]){
-                        if(!vis[i]){
-                        vis[i] = 1;
-                        q.push(i);
-                    }   
-                }
-            }
-            }
+        DisjointSet ds(n);
+        for(auto it: edges){
+            int u = it.first;
+            int v = it.second;
+            
+            ds.unionByRank(u, v);
+        }
+        
+        for(int i=0; i<n ;i++){
+            if(ds.findUPar(i) == i) count++;
         }
         return count;
     }
