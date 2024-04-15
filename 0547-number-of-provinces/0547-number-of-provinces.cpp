@@ -54,25 +54,17 @@ public:
     int findCircleNum(vector<vector<int>>& isConnected) {
         
         int n = isConnected.size(); // n = number of vertices
-        
+        DisjointSet ds(n);
         vector<pair<int, int>> edges;
         for(int i=0; i<n; i++){
             for(int j=i+1; j<n; j++){
                 if(isConnected[i][j] == 1){             // list of edges in the graph.
-                    edges.push_back({i, j});
+                    ds.unionBySize(i, j);
                 }
             }
         }
         
         int count = 0;
-        DisjointSet ds(n);
-        for(auto it: edges){
-            int u = it.first;
-            int v = it.second;
-            
-            ds.unionBySize(u, v);
-        }
-        
         for(int i=0; i<n ;i++){
             if(ds.findUPar(i) == i) count++;        // if a node is a parent to itself it is the ultimate parent
         }                                           // also the number of ultimate parent = number of components in a graph.
