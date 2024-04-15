@@ -1,11 +1,11 @@
 class DisjointSet {
-    vector<int> rank, parent, size;
+    vector<int> rank, size, parent;
 public:
     DisjointSet(int n){
         rank.resize(n+1, 0);
         size.resize(n+1, 1);
         parent.resize(n+1);
-        for(int i=0; i<n; i++){
+        for(int i=0; i<=n; i++){
             parent[i] = i;
         }
     }
@@ -18,7 +18,6 @@ public:
     void unionByRank(int u, int v){
         int ulp_u = findUPar(u);
         int ulp_v = findUPar(v);
-        
         if(ulp_u == ulp_v) return;
         if(rank[ulp_u] < rank[ulp_v]){
             parent[ulp_u] = ulp_v;
@@ -35,7 +34,6 @@ public:
     void unionBySize(int u, int v){
         int ulp_u = findUPar(u);
         int ulp_v = findUPar(v);
-        
         if(ulp_u == ulp_v) return;
         if(size[ulp_u] < size[ulp_v]){
             parent[ulp_u] = ulp_v;
@@ -46,12 +44,11 @@ public:
             size[ulp_u] += size[ulp_v];
         }
     }
-
 };
 class Solution {
 public:
     int makeConnected(int n, vector<vector<int>>& connections) {
-        int count = 0;
+        int edges = connections.size();
         DisjointSet ds(n);
         for(auto it: connections){
             int u = it[0];
@@ -60,11 +57,12 @@ public:
             ds.unionByRank(u, v);
         }
         
-        for(int i=0; i<n ;i++){
-            if(ds.findUPar(i) == i) count++;        // if a node is a parent to itself it is the ultimate parent
-        }                                           // also the number of ultimate parent = number of components in a graph.
-        int edges = connections.size();
+        int count = 0;
+        for(int i=0; i<n; i++){
+            if(ds.findUPar(i) == i) count++;
+        }
+        
         if(edges < n-1) return -1;
-        return count-1;
+        return count - 1;
     }
 };
