@@ -1,8 +1,9 @@
 class DisjointSet {
-    vector<int> rank, parent;
+    vector<int> rank, parent, size;
 public:
     DisjointSet(int n){
         rank.resize(n+1, 0);
+        size.resize(n+1, 1);
         parent.resize(n+1);
         for(int i=0; i<n; i++){
             parent[i] = i;
@@ -30,6 +31,22 @@ public:
             rank[ulp_u]++;
         }
     }
+    
+    void unionBySize(int u, int v){
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        
+        if(ulp_u == ulp_v) return;
+        if(size[ulp_u] < size[ulp_v]){
+            parent[ulp_u] = ulp_v;
+            size[ulp_v] += size[ulp_u];
+        }
+        else{
+            parent[ulp_v] = ulp_u;
+            size[ulp_u] += size[ulp_v];
+        }
+    }
+
 };
 
 class Solution {
@@ -53,12 +70,12 @@ public:
             int u = it.first;
             int v = it.second;
             
-            ds.unionByRank(u, v);
+            ds.unionBySize(u, v);
         }
         
         for(int i=0; i<n ;i++){
-            if(ds.findUPar(i) == i) count++;
-        }
+            if(ds.findUPar(i) == i) count++;        // if a node is a parent to itself it is the ultimate parent
+        }                                           // also the number of ultimate parent = number of components in a graph.
         return count;
     }
 };
