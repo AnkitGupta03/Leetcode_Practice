@@ -15,42 +15,19 @@ public:
         ListNode *dummyNode = new ListNode(-1);
         ListNode *curr = dummyNode;
         while(l1 || l2){
-            if(l1 && l2){
-                int newval1 = (l1 -> val + l2 -> val + carry);
-                int newval = newval1 % 10;
-                ListNode *newNode = new ListNode(newval);
-                curr -> next = newNode;
-                curr = curr -> next;
-                carry = 0;
-                if((newval1) > 9) carry = 1;
-                l1 = l1 -> next;
-                l2 = l2 -> next;
-            }
-            else if(l1 == nullptr){
-                int newval1 = (l2 -> val + carry);
-                int newval = newval1 % 10;
-                ListNode *newNode = new ListNode(newval);
-                curr -> next = newNode;
-                curr = curr -> next;
-                carry = 0;
-                if((newval1) > 9) carry = 1;
-                l2 = l2 -> next;
-            }
-            else if(l2 == nullptr){
-                int newval1 = (l1 -> val + carry);
-                int newval = newval1 % 10;
-                ListNode *newNode = new ListNode(newval);
-                curr -> next = newNode;
-                curr = curr -> next;
-                carry = 0;
-                if((newval1) > 9) carry = 1;
-                l1 = l1 -> next;
-            }
-        }
-        if(carry == 1){
-            ListNode *newNode = new ListNode(carry);
+            int sum = carry;
+            if(l1) sum += l1 -> val;
+            if(l2) sum += l2 -> val;
+            ListNode *newNode = new ListNode(sum % 10);
+            carry = sum/10;
             curr -> next = newNode;
             curr = curr -> next;
+            if(l1) l1 = l1 -> next;
+            if(l2) l2 = l2 -> next;
+        }
+        if(carry){
+            ListNode *newNode = new ListNode(carry);
+            curr -> next = newNode;
         }
         return dummyNode -> next;
     }
