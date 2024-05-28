@@ -9,16 +9,16 @@
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        map<ListNode*, bool> mpp;
+        map<ListNode* , bool> mpp;
         ListNode *temp = headA;
         while(temp){
             mpp[temp] = 1;
-            temp = temp -> next;
+            temp =temp -> next;
         }
         temp = headB;
         while(temp){
             if(mpp[temp] == 1) return temp;
-            temp = temp -> next;
+            temp =temp -> next;
         }
         return nullptr;
     }
