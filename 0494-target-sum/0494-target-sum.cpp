@@ -1,18 +1,22 @@
 class Solution {
 public:
-    int f(int i, int target, vector<int> &nums, vector<vector<int>> &dp){
-        if(i==-1){
-            if(target == 0) return 1;
-            else return 0;
-        }
-        if(dp[i][target+2000] != -1) return dp[i][target+2000];
-        int minus = f(i-1, target + nums[i], nums, dp);
-        int plus = f(i-1, target - nums[i], nums, dp);
-        return dp[i][target+2000] = minus + plus;
+    int f(int i, int target, vector<int> &nums, vector<vector<int>> &dp, int offset){
+    if(i == -1){
+        return target == 0 ? 1 : 0;
     }
-    int findTargetSumWays(vector<int>& nums, int target) {
-        int n = nums.size();
-        vector<vector<int>> dp(n, vector<int> (4001, -1));
-        return f(n-1, target, nums, dp);
-    }
+    if(target + offset < 0 || target + offset >= dp[0].size()) return 0; // Check for out-of-bound access
+    if(dp[i][target + offset] != -1) return dp[i][target + offset];
+    int minus = f(i - 1, target + nums[i], nums, dp, offset);
+    int plus = f(i - 1, target - nums[i], nums, dp, offset);
+    return dp[i][target + offset] = minus + plus;
+}
+
+int findTargetSumWays(vector<int>& nums, int target) {
+    int n = nums.size();
+    int sum = accumulate(nums.begin(), nums.end(), 0);
+    int offset = sum; // This is the maximum possible value of target + sum
+    vector<vector<int>> dp(n, vector<int> (2 * sum + 1, -1));
+    return f(n - 1, target, nums, dp, offset);
+}
+
 };
